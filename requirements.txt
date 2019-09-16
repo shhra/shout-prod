@@ -7,3 +7,4 @@ django-allauth
 sentence_transformers
 whitenoise
 django-heroku
+dj-database-url

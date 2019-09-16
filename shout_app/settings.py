@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 import django_heroku
+import dj_database_url
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -84,16 +85,17 @@ WSGI_APPLICATION = 'shout_app.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': os.getenv('SQL_ENGINE'),
-        'NAME': os.getenv('SQL_DATABASE'),
-        'USER': os.getenv('SQL_USER'),
-        'PASSWORD': os.getenv('SQL_PASSWORD'),
-        'HOST': os.getenv('SQL_HOST'),
-        'PORT': os.getenv('SQL_PORT')
-    }
-}
+# DATABASES = {
+    # 'default': {
+        # 'ENGINE': os.getenv('SQL_ENGINE'),
+        # 'NAME': os.getenv('SQL_DATABASE'),
+        # 'USER': os.getenv('SQL_USER'),
+        # 'PASSWORD': os.getenv('SQL_PASSWORD'),
+        # 'HOST': os.getenv('SQL_HOST'),
+        # 'PORT': os.getenv('SQL_PORT')
+    # }
+# }
+DATABASES['default'] =  dj_database_url.config()
 
 # USER CLASS
 AUTH_USER_MODEL = 'master.CustomUser'
