@@ -4,12 +4,13 @@
 {% block content %}
 <nav>
     <ul class="bar">
-        <a href="{% url 'master:home' %}"><u>About</u></a>
+        <a href="{% url 'home' %}"><u>About</u></a>
         <a href="{% url 'master:shouts' %}"><u>Recents</u></a>
         <a href="{% url 'master:create_shout' %}"><u>Create</u></a>
     </ul>
 </nav>
 
+<div class="bar">
 <p> What is Shout It? </br>
 It is a platform for you to share anything about your feelings, your personal and social issues. </br>
 There are users who are sharing there own problems and feelings. You can view that in 
@@ -24,4 +25,5 @@ The Logo returns you into this page.
 Feel free to support a user whose problem is similar to yours. With 5 supports, you guys can unlock
 discussion feature! 
 </p>
+</div>
 {% endblock %}

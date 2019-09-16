@@ -118,9 +118,14 @@ header {
 .bar a:link,
 .bar a:visited
 {
-    color: #000;
+    color: #3498db;
     text-decoration: none;
 }
+
+.bar p {
+    padding-bottom: 2vh;
+}
+
 
 /* ------------------------------------------ */
 /* ShoutBox */
