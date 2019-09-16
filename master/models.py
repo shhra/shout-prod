@@ -4,8 +4,8 @@ import pickle
 from sentence_transformers import SentenceTransformer
 
 # Language Model
-model_path = 'language_model/'
-embedder = SentenceTransformer(model_path)
+# model_path = 'language_model/'
+# embedder = SentenceTransformer(model_path)
 """
 Core Tables
 """
@@ -163,7 +163,7 @@ class Shout(DateTimeModel):
                 break
             # Truncate & Minus 1 for the hyphen.
             self.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
-        self.value = pickle.dumps(embedder.encode([self.body]))
+        # self.value = pickle.dumps(embedder.encode([self.body]))
         super(Shout, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
