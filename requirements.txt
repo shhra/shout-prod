@@ -6,3 +6,4 @@ gunicorn
 django-allauth
 sentence_transformers
 whitenoise
+django-heroku
