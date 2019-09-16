@@ -1,0 +1,27 @@
+{% extends 'index.html' %}
+{% block title %}
+{{object.title}}
+{% endblock %}
+
+{% block content %}
+<h3 class="bar"> {{object.title}} </h3>
+<div class="shout-detail main-border">
+<a href="{% url 'master:user_detail' object.shouter.username %}">
+    {% ifequal object.shouter.id request.user.id %}
+    {% endifequal %}
+    </td>
+    <span class="shouter"><u>{{object.shouter}}</u></span></a> 
+    <span class="shouter"> &mdash; {{object.created_at}}</span>
+    </br>
+    <p> {{shout.body}} </p>
+    <div class="shout-action">
+        Supports: {{ object.supporters.count }}
+        <a href="{% url 'master:support_shout' object.slug %}" >+</a>
+        {% if object.supporters.count >= object.threshold %}
+            <a class="action-element" href="{% url 'master:shout_discussion' object.slug%}">Open Discussion</a>
+        {% endif %}
+        <a class="action-element" href="{% url 'master:echo_shout' object.slug %}">Echo</a>
+        <a class="action-element" href="{% url 'master:delete_shout' object.slug %}">Delete</a>
+    </div>
+</div>
+{% endblock %}

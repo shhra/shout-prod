@@ -1,0 +1,17 @@
+{% extends 'index.html' %}
+
+{% block title %}
+{% comment %}{% if object %} Edit Shout {% else %} New Shout {% endif %}{% endcomment %}
+New Comment
+{% endblock %}
+{% block content %}
+{% comment %}<form class="form" action="{% if object %}{% url 'master:edit_shout' object.slug %}{% else %}{% endcomment %}
+{% comment %}{% url 'master:create_shout' %}{% endif %}" method="POST">{% csrf_token %}{% endcomment %}
+{% comment %}{{form.as_p}}{% endcomment %}
+<form class="form-ul" action="{% url 'master:create_comment' shout.slug %}" method="post">{% csrf_token%}
+    {{ form.as_ul }} 
+<div>
+<button type="submit">Submit</button>
+</div>
+</form>
+{% endblock %}

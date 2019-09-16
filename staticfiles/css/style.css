@@ -1,0 +1,267 @@
+/* ------------------------------------------ */
+/* Setup */
+/* ------------------------------------------ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    background-color: #fff;
+    color:#222;
+    font-family: 'Source Serif Pro', serif;
+    font-size: 20px;
+    text-rendering: optimizeLegibility;
+}
+
+/* ------------------------------------------ */
+/* REUSABLES */
+/* ------------------------------------------ */
+.row {
+    max-width: 80%;
+    margin: 0 auto; /* top buttom right left*/
+}
+
+.main-border {
+    border-radius: 5px;
+    border: 1px solid #3498db;
+}
+
+h1 {
+    margin: 0;
+    font-size: 250%;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+h3 {
+    color: #000;
+}
+
+.action-element {
+    padding-left: 5vw;
+}
+
+a {
+    text-decoration: none;
+    color: #3498db;
+}
+
+.main-box {
+    max-width: 80%;
+    padding: 2vh 2vw;
+}
+
+/* ------ BUTTONS --------*/
+
+.btn:link,
+.btn:visited {
+    display: inline-block;
+
+}
+
+/* ------------------------------------------ */
+/* HEADER */
+/* ------------------------------------------ */
+
+header {
+    max-width: 80%;
+    margin: 0 auto;
+    height: 10vh;
+    text-align: left;
+}
+
+.header-text-box {
+    max-width: 80%;
+    margin: 0 auto;
+    position: absolute;
+}
+
+.logo {
+    height: 10vh;
+    width: auto;
+    float: left;
+    padding: 7% 5%;
+}
+
+.main-nav {
+    float: right;
+    margin-top: 20px;
+}
+
+.main-nav a:link,
+.main-nav a:visited {
+    padding: 2vh 1vw;
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 300;
+    font-size: 90%;
+    transition: border-bottom 0.2s;
+}
+
+.main-nav a:hover,
+.main-nav a:active {
+    border-bottom: 2px solid #3498db;
+}
+
+/* ------------------------------------------ */
+/* BAR */
+/* ------------------------------------------ */
+
+.bar {
+    padding: 2vh 1vw;
+    color: #000;
+    font-size: 110%;
+}
+
+.bar a:link,
+.bar a:visited
+{
+    color: #000;
+    text-decoration: none;
+}
+
+/* ------------------------------------------ */
+/* ShoutBox */
+/* ------------------------------------------ */
+.shout-box {
+    padding: 2vh 1vw;
+    color: #888;
+    font-size: 95%;
+    box-sizing: border-box;
+    background-color:#fafafa;
+}
+
+.shouter {
+    float: left;
+    color: #888
+}
+
+.shout-box p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #555
+}
+
+/* ------------------------------------------ */
+/* Shoutdetail */
+/* ------------------------------------------ */
+.shout-detail {
+    padding: 5vh 5vw 8vh 5vw;
+    color: #3498db;
+    font-size: 90%;
+    box-sizing: border-box;
+    background-color:#fafafa;
+}
+
+.shout-detail p {
+    text-align: justify;
+    padding: 2vh 0;
+    border-bottom: 1px solid #3498db;
+    color: #222
+}
+
+/* ------------------------------------------ */
+/* ShoutAction */
+/* ------------------------------------------ */
+.shout-action {
+    color: #333333;
+    padding: 2vh 0;
+    font-size: 90%;
+    box-sizing: border-box;
+    background-color:#fafafa;
+    float: left;
+}
+
+.shout-action a {
+    text-decoration: none;
+    color: #3498db;
+}
+
+/* ------------------------------------------ */
+/* UserInfo */
+/* ------------------------------------------ */
+.user-info {
+    padding: 2vh 1vw;
+    color: #000;
+    font-size: 90%;
+}
+
+.user-info a {
+    text-decoration: none;
+    color: #3498db;
+}
+
+/* ------------------------------------------ */
+/* Comment */
+/* ------------------------------------------ */
+.comment-box {
+    position: fixed;
+    color: #333333;
+    padding: 2vh 2vw;
+    font-size: 90%;
+    box-sizing: border-box;
+    background-color:#fafafa;
+    float: left;
+    width: 80%
+}
+
+.comment-text {
+    color: #333333;
+    margin: 1vh 1vw;
+    padding: 1vh 1vw;
+    font-size: 90%;
+    background-color:#fefefe;
+    box-sizing: border-box;
+    box-shadow: 1px 1px #eeeeee;
+
+}
+
+/* ------------------------------------------ */
+/* Signup */
+/* ------------------------------------------ */
+.signup {
+    max-width: 80%;
+    padding: 2vh 2vw;
+}
+
+.signup p{
+    padding: 1vh 0;
+}
+
+.signup input{
+    width: 50%;
+    padding: 5px 5px;
+    margin: 1px 1px;
+    display: inline-block;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #3498db;
+}
+
+.signup li{
+    color: #555;
+    list-style-type: none;
+    padding: 1vh 1vw;
+}
+/* ------------------------------------------ */
+/* Forms */
+/* ------------------------------------------ */
+.input {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 5px;
+    display: inline-block;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #3498db;
+}
+
+.form-ul li{
+    color: #555;
+    list-style-type: none;
+    padding: 0 5px;
+}
+

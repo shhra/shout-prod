@@ -1,0 +1,11 @@
+<!-- templates/home.html -->
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+<nav>
+    <ul class="bar">
+        <a href="{% url 'master:shouts' %}">Recents</a>
+        <a href="{% url 'master:create_shout' %}">Create</a>
+    </ul>
+</nav>
+{% endblock %}

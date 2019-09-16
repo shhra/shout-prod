@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+
+{% block content %}
+   <h3 class="modal-title">Delete Shout</h3>
+<form class="form" action="{% url 'master:delete_comment' object.slug %}" method="POST">{% csrf_token %}
+   <div class="modal-body">
+       <p>Are you sure you want to delete the comment?</p>
+   </div>
+   <div class="modal-footer">
+       <input type="submit" value="Confirm" class="btn btn-danger">
+       <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+   </div>
+</form>
+{% endblock %}

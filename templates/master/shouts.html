@@ -1,0 +1,24 @@
+{% extends 'index.html' %}
+{% block title %}Recent Shouts{% endblock %}
+
+{% block content%}
+<h3 class="bar">Recents</h3>
+{% for shout in object_list  %}
+<br>
+
+<div class="bar main-border shout-box">
+    <a href="{% url 'master:user_detail' shout.shouter %}">
+        <span class="shouter"><u>{{ shout.shouter }}</u> &mdash; {{shout.created_at}} </span>
+    </a>
+        </br>
+    <a href="{% url 'master:shout_detail' shout.slug %}">
+        <h3>{{ shout.title }}</h3>
+    <p>
+    {{shout.body}}
+    </p>
+    </a>
+
+</div>
+
+{% endfor %}
+{% endblock %}

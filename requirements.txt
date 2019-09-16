@@ -1,0 +1,8 @@
+Django==2.2
+pytz==2018.9
+sqlparse==0.3.0
+djangorestframework
+gunicorn
+django-allauth
+sentence_transformers
+whitenoise
