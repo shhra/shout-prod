@@ -1,1 +1,1 @@
-web: gunicorn shout.shout_app.wsgi --log-file -
+web: gunicorn shout_app.wsgi --log-file -
