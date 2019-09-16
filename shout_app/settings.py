@@ -21,10 +21,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #- SECRET_KEY='qo&pp(lwt1=rl&zip_dc=tjw9wrbit7i2xr+v=8u&mxw$o+ym2'
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY', 'qo&pp(lwt1=rl&zip_dc=tjw9wrbit7i2xr+v=8u&mxw$o+ym2')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG =  os.environ.get('DJANGO_DEBUG', '') != 'False'
 
 ALLOWED_HOSTS = ['0.0.0.0',
         'theshoutit.herokuapp.com']
