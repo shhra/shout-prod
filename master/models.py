@@ -4,7 +4,7 @@ import pickle
 from sentence_transformers import SentenceTransformer
 
 # Language Model
-embedder = SentenceTransformer('bert-base-nli-stsb-mean-tokens')
+embedder = SentenceTransformer('https://public.ukp.informatik.tu-darmstadt.de/reimers/sentence-transformers/v0.2/bert-base-nli-mean-tokens.zip')
 """
 Core Tables
 """
