@@ -3,6 +3,7 @@ pytz==2018.9
 sqlparse==0.3.0
 djangorestframework
 gunicorn
+torch==1.2.0+cpu
 django-allauth
 sentence_transformers
 whitenoise
