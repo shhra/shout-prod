@@ -171,4 +171,4 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
 #heroku
-django_heroku.settings(locals)
+# django_heroku.settings(locals)
