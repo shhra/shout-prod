@@ -95,8 +95,8 @@ WSGI_APPLICATION = 'shout_app.wsgi.application'
         # 'PORT': os.getenv('SQL_PORT')
     # }
 # }
-DATABASES['default'] =  dj_database_url.config()
-
+DATABASES = {}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 # USER CLASS
 AUTH_USER_MODEL = 'master.CustomUser'
 
