@@ -33,11 +33,10 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['username', 'date_joined', 'shout_user']
 
     def get_shout_user(self, obj):
-        shouts = Shout.objects.all().filter(shouter=obj.id)\
-                .exclude(deleted_at__isnull=False)
+        shouts = Shout.objects.all()
         data = dict()
         for i, shout in enumerate(shouts):
-                data = {i:shout.slug}
+                data[i] = shout.slug
         if len(data.keys()) == 0:
             data = {"1": "empty"}
         return data

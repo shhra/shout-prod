@@ -21,7 +21,7 @@
         <nav>
             <div >
                 <ul class="main-nav">
-                {% if user.is_authenticated %}
+                {% if request.user.is_authenticated %}
                 <a class="btn" href={% url 'master:user_detail' request.user.username %}>{{ request.user.username }}!</a>
                 <a href="{% url 'account_logout' %}">logout</a>
                 {% else %}
