@@ -33,7 +33,7 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['username', 'date_joined', 'shout_user']
 
     def get_shout_user(self, obj):
-        shouts = Shout.objects.all()
+        shouts = Shout.objects.all().filter(shouter=obj)
         data = dict()
         for i, shout in enumerate(shouts):
                 data[i] = shout.slug
