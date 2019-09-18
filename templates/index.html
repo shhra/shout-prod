@@ -8,13 +8,15 @@
         <link rel="stylesheet" type="text/css" href="{% static 'assets/css/normalize.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'assets/css/grid.css' %}">
         <link href="https://fonts.googleapis.com/css?family=Source+Serif+Pro&display=swap&subset=latin-ext" rel="stylesheet">
-        <title> <img class="logo" src={% static 'img/logo.svg'%}>{% block title %} Shout It {% endblock %} </title>
+<link rel="shortcut icon" href={% static 'img/logo-svg.ico'%}>
+        <title> {% block title %} Shout It {% endblock %} </title>
+
     </head>
     <body>
         <!-- Main Header -->
         <header>
             <div class="header-text-box">
-                <h2> <a class="btn" href="{% url 'home' %}"><link href={% static 'img/logo-svg.ico'%}></a></h2>
+                <h2> <a class="btn" href="{% url 'home' %}"><img class="logo" src={% static 'img/logo.svg'%}></a></h2>
             </div>  
 
         <!-- User Account -->
