@@ -32,7 +32,15 @@ ALLOWED_HOSTS = ['0.0.0.0',
         'theshoutit.herokuapp.com']
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
+
 # Application definition
+REST_USE_JWT = True
 
 INSTALLED_APPS = [
     'django.contrib.admin',

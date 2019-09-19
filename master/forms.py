@@ -4,6 +4,13 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import CustomUser, Shout, Comment
 
 
+
+class CustomUserForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = '__all__'
+
+
 class CustomUserCreationForm(UserCreationForm):
 
     def __init__(self, *args, **kargs):
@@ -19,11 +26,11 @@ class CustomUserChangeForm(UserChangeForm):
 
     def __init__(self, *args, **kargs):
         super(CustomUserChangeForm, self).__init__(*args, **kargs)
-        # del self.fields['first_name', 'last_name']
 
     class Meta:
         model = CustomUser
-        fields = ['password','email','is_professional',]
+        fields = '__all__'
+        #fields = ['password','email','is_professional',]
 
 
 class SignUpForm(SignupForm):

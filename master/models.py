@@ -105,6 +105,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     TODO
     1. Add phone field
     """
+    first_name = models.CharField(max_length=1, blank=True, null=True, default=None)
+    last_name = models.CharField(max_length=1, blank=True, null=True, default=None)
     username = models.CharField(max_length=25, unique=True)
     location = models.CharField(max_length=10, blank=True)
     email = models.EmailField(max_length=255)
