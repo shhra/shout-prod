@@ -5,7 +5,7 @@ from rest_framework import (generics, mixins, permissions, status)
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.reverse import reverse
-
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication 
 from .models import (CustomUser, Shout, Comment, Discussion)
 from .permissions import IsOwnerOrReadOnly
 from .serializers import (
