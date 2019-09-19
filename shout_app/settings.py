@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -84,17 +84,18 @@ WSGI_APPLICATION = 'shout_app.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-# DATABASES = {
-    # 'default': {
-        # 'ENGINE': os.getenv('SQL_ENGINE'),
-        # 'NAME': os.getenv('SQL_DATABASE'),
-        # 'USER': os.getenv('SQL_USER'),
-        # 'PASSWORD': os.getenv('SQL_PASSWORD'),
-        # 'HOST': os.getenv('SQL_HOST'),
-        # 'PORT': os.getenv('SQL_PORT')
-    # }
-# }
 DATABASES = {}
+# if DEBUG:
+    # databases = {
+        # 'default': {
+            # 'engine': os.getenv('sql_engine'),
+            # 'name': os.getenv('sql_database'),
+            # 'user': os.getenv('sql_user'),
+            # 'password': os.getenv('sql_password'),
+            # 'host': os.getenv('sql_host'),
+            # 'port': os.getenv('sql_port')
+        # }
+    # }
 DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 # USER CLASS
 AUTH_USER_MODEL = 'master.CustomUser'
