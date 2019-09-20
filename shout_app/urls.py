@@ -24,6 +24,6 @@ urlpatterns = [
     path('', include('master.urls')),
     path('api/', include('rest_framework.urls')),
     path('', include('allauth.urls')),
-    path('request-auth-token', views.obtain_auth_token),
+    path('api/request-auth-token', views.obtain_auth_token),
     path('api-auth/', include('rest_auth.urls')),
 ]
