@@ -7,6 +7,7 @@ https://download.pytorch.org/whl/cpu/torch-1.0.1.post2-cp36-cp36m-linux_x86_64.w
 django-allauth
 django-rest-auth
 djangorestframework-jwt
+django-cors-headers
 sentence_transformers
 whitenoise
 dj-database-url
