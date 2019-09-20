@@ -109,8 +109,8 @@ class SupportShoutAPI(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
             IsOwnerOrReadOnly]
 
-    def get(self, request, pk, format=None):
-        shout = get_object_or_404(Shout, pk=pk)
+    def get(self, request, slug, format=None):
+        shout = get_object_or_404(Shout, slug=slug)
         supported = False
         user = self.request.user
         if user.is_authenticated:
@@ -126,7 +126,7 @@ class SupportShoutAPI(APIView):
             }
             return Response(data)
         else:
-            return redirect('master:login')
+            return redirect('account_login')
 
 
 class CommentListAPI(generics.ListAPIView):
