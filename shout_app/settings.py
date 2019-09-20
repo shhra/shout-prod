@@ -76,12 +76,12 @@ MIDDLEWARE = [
 # cors settings
 CORS_ORIGIN_ALLOW_ALL = False
 
-CORS_ORIGIN_WHITELIST = (
+CORS_ORIGIN_WHITELIST = [
         'http://0.0.0.0:8000',
         'http://theshouit.herokuapp.com',
         'http://rnattest.web.app',
         'http://rnattest.firbase.app',
-)
+]
 
 ROOT_URLCONF = 'shout_app.urls'
 
