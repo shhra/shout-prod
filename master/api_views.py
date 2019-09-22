@@ -29,7 +29,7 @@ class ShoutListAPI(generics.ListAPIView):
     """
     List all shouts
     """
-    queryset = Shout.objects.all()
+    queryset = Shout.objects.all().orderby('-date')
     serializer_class = ShoutSerializer
 
 
