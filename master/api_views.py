@@ -99,6 +99,11 @@ class UserListAPI(generics.ListAPIView):
     serializer_class = UserSerializer
 
 
+class SignupAPI(generics.CreateAPIView):
+    serializer_class = CreateUserSerializer
+
+
+
 class SupportShoutAPI(APIView):
 
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
