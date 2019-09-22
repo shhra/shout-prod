@@ -99,10 +99,6 @@ class UserListAPI(generics.ListAPIView):
     serializer_class = UserSerializer
 
 
-class SignupAPI(generics.CreateAPIView):
-    serializer_class = CreateUserSerializer
-
-
 class SupportShoutAPI(APIView):
 
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
@@ -113,12 +109,14 @@ class SupportShoutAPI(APIView):
         supported = False
         user = self.request.user
         if user.is_authenticated:
-            if user not in shout.supporters.all():
+            if shout.supporters.count() < shout.threshold and user not in shout.supporters.all():
                 supported = True
                 shout.supporters.add(user)
-            else:
+            elif shout.supporters.count() >= shout.threshold and user in shout.supporters.all():
                 supported = False
                 shout.supporters.remove(user)
+            else:
+                return Http404
             updated = True
             data = {
                     'supported': supported
@@ -214,6 +212,7 @@ class DiscussionList(
                 comment = {}
                 comment['user'] = each.commented_by.username
                 comment['date'] = each.created_at
+                context['text'] = each.text
                 context['comments'].append(comment)
             return Response(context)
         else:
