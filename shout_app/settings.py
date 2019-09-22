@@ -81,7 +81,7 @@ CORS_ORIGIN_WHITELIST = [
         'http://localhost:3000',
         'http://theshouit.herokuapp.com',
         'https://rnattest.web.app',
-        'https://rnattest.firebase.com',
+        'https://rnattest.firebaseapp.com',
         'http://rnattest.firbase.app',
 ]
 
