@@ -103,7 +103,6 @@ class SignupAPI(generics.CreateAPIView):
     serializer_class = CreateUserSerializer
 
 
-
 class SupportShoutAPI(APIView):
 
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
@@ -117,6 +116,9 @@ class SupportShoutAPI(APIView):
             if shout.supporters.count() < shout.threshold and user not in shout.supporters.all():
                 supported = True
                 shout.supporters.add(user)
+            elif shout.supporters.count() < shout.threshold and user in shout.supporters.all():
+                supported = False
+                shout.supporters.remove(user)
             elif shout.supporters.count() >= shout.threshold and user in shout.supporters.all():
                 supported = False
                 shout.supporters.remove(user)
