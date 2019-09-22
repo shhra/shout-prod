@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from master.models import (CustomUser, Shout, Comment)
+from master.models import (CustomUser, Shout, Comment, Discussion)
 from django.http import Http404
 
 
@@ -11,7 +11,7 @@ class ShoutSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Shout
-        fields = ['slug', 'title', 'body', 'shouter', 'supports', 'date', 'user_support']
+        fields = ['slug', 'title', 'body', 'threshold', 'shouter', 'supports', 'date', 'user_support']
 
     def get_user_support(self, shout):
         user = self.context['request'].user
@@ -21,13 +21,22 @@ class ShoutSerializer(serializers.ModelSerializer):
             return False
 
 
+class ShoutDetailSerializer(serializers.ModelSerializer):
+    shouter = serializers.ReadOnlyField(source='shouter.username')
+    supports = serializers.ReadOnlyField(source='supporters.count')
+
+    class Meta:
+        model = Shout
+        fields = ['slug', 'title', 'body', 'threshold', 'shouter', 'supports', 'date']
+
+
 class CreateShoutSerializer(serializers.ModelSerializer):
 
     shouter = serializers.ReadOnlyField(source='shouter.username')
 
     class Meta:
         model = Shout
-        fields = ['title', 'body', 'shouter']
+        fields = ['title', 'body', 'shouter', 'threshold']
 
 
 class UserSerializer(serializers.ModelSerializer):

@@ -1,4 +1,4 @@
-from django.http import Http404
+from django.http import Http404, request
 from django.shortcuts import (
         redirect, get_object_or_404)
 from rest_framework import (generics, mixins, permissions, status)
@@ -6,11 +6,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.reverse import reverse
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication 
-from .models import CustomUser, Shout, Comment
+from .models import CustomUser, Shout, Comment, Discussion
 from .permissions import IsOwnerOrReadOnly
 from .serializers import (
-    ShoutSerializer, CreateShoutSerializer,
-    UserSerializer, CreateUserSerializer,
+    ShoutSerializer, CreateShoutSerializer, ShoutDetailSerializer,
+    UserSerializer, CreateUserSerializer, 
     CommentSerializer, CreateCommentSerializer,)
 
 
@@ -52,8 +52,7 @@ class ShoutDetailAPI(
     """
     Gives the detail information of the shout
     """
-    queryset = Shout.objects.all()
-    serializer_class = ShoutSerializer
+    serializer_class = ShoutDetailSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
             IsOwnerOrReadOnly]
 
@@ -65,7 +64,7 @@ class ShoutDetailAPI(
 
     def get(self, request, slug, format=None):
         shout = self.get_object(slug)
-        serializer = ShoutSerializer(shout)
+        serializer = ShoutDetailSerializer(shout)
         return Response(serializer.data)
     
     def delete(self, request, slug, format=None):
@@ -184,25 +183,42 @@ class CommentDetailAPI(APIView):
 
 
 # Views related to Discussion - List View
-class DiscussionList(generics.ListAPIView):
+class DiscussionList(
+        mixins.RetrieveModelMixin,
+        generics.GenericAPIView):
+    """
+    Gives the detail information of the shout
+    """
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+            IsOwnerOrReadOnly]
     """
     Details on Discussion
     """
-        
+    def get_object(self, slug):
+        try:
+            return Shout.objects.get(slug=slug)
+        except Shout.DoesNotExist:
+            raise Http404
+
     def get(self, request, slug, format=None):
-        shout = get_object_or_404(Shout, slug=self.kwargs.get("slug"))
+        shout = self.get_object(slug)
         user = self.request.user
         context = {}
-        if shout.supporters.count() >= shout.threshold or (user.is_authenticated and user.is_professional):
-            context['id'] = shout.id
-            context['slug'] = shout.slug
-            context['comments'] = [] 
-            for comment in Comment.objects.all().filter(commented_on=shout.id):
-                context['comments'].append(comment.slug)
+        if shout.supporters.count() >= shout.threshold or user.is_professional:
+            shout = Shout.objects.get(id=shout.id)
+            comments = Comment.objects.all().filter(commented_on=shout.id)
+            context['shout_id'] = shout.id
+            context['shout_slug'] = shout.slug
+            context['comments'] = []
+            for each in comments:
+                comment = {}
+                comment['user'] = each.commented_by.username
+                comment['date'] = each.created_at
+                context['comments'].append(comment)
             return Response(context)
         else:
             raise Http404
-
+        
 
 # Views related to self
 class MeView(APIView):
