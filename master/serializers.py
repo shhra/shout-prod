@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from master.models import (CustomUser, Shout, Comment, Discussion)
+from master.models import (CustomUser, Shout, Comment)
 from django.http import Http404
 
 

@@ -154,7 +154,7 @@ class UserDetail(DetailView):
         return context
 
 
-# Views related to Discussion - Detail View
+# Views related to Discussion - List View
 class DiscussionDetail(ListView):
     """
     Details on Discussion
@@ -172,7 +172,7 @@ class DiscussionDetail(ListView):
         user = self.request.user
         if shout.supporters.count() >= shout.threshold or user.is_professional:
             context['shout'] = Shout.objects.get(id=shout.id)
-            context['comments'] = Comment.objects.all()
+            context['comments'] = Comment.objects.all().filter(commented_on=shout.id)
             context['user'] = user
             return context
         else:

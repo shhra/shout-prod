@@ -181,3 +181,25 @@ class CommentDetailAPI(APIView):
         else:
            comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# Views related to Discussion - List View
+class DiscussionList(generics.ListAPIView):
+    """
+    Details on Discussion
+    """
+        
+    def get(self, request, slug, format=None):
+        shout = get_object_or_404(Shout, slug=self.kwargs.get("slug"))
+        user = self.request.user
+        context = {}
+        if shout.supporters.count() >= shout.threshold or (user.is_authenticated and user.is_professional):
+            context['id'] = shout.id
+            context['slug'] = shout.slug
+            context['comments'] = [] 
+            for comment in Comment.objects.all().filter(commented_on=shout.id):
+                context['comments'].append(comment.slug)
+            return Response(context)
+        else:
+            raise Http404
+
