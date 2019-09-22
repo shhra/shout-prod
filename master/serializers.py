@@ -21,7 +21,6 @@ class ShoutSerializer(serializers.ModelSerializer):
             return False
 
 
-
 class CreateShoutSerializer(serializers.ModelSerializer):
 
     shouter = serializers.ReadOnlyField(source='shouter.username')
