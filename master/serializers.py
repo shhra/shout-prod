@@ -7,10 +7,19 @@ class ShoutSerializer(serializers.ModelSerializer):
 
     shouter = serializers.ReadOnlyField(source='shouter.username')
     supports = serializers.ReadOnlyField(source='supporters.count')
+    user_support = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Shout
-        fields = ['slug', 'title', 'body', 'shouter', 'supports', 'date', 'deleted_at']
+        fields = ['slug', 'title', 'body', 'shouter', 'supports', 'date', 'user_support']
+
+    def get_user_support(self, shout):
+        user = self.context['request'].user
+        if user in shout.supporters.all():
+            return True
+        else:
+            return False
+
 
 
 class CreateShoutSerializer(serializers.ModelSerializer):

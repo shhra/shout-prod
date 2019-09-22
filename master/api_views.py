@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.reverse import reverse
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication 
-from .models import (CustomUser, Shout, Comment, Discussion)
+from .models import CustomUser, Shout, Comment
 from .permissions import IsOwnerOrReadOnly
 from .serializers import (
     ShoutSerializer, CreateShoutSerializer,
@@ -29,7 +29,7 @@ class ShoutListAPI(generics.ListAPIView):
     """
     List all shouts
     """
-    queryset = Shout.objects.all().order_by('-date')
+    queryset = Shout.objects.all()
     serializer_class = ShoutSerializer
 
 
