@@ -9,7 +9,7 @@ from rest_framework.authentication import SessionAuthentication, BasicAuthentica
 from .models import CustomUser, Shout, Comment, Discussion
 from .permissions import IsOwnerOrReadOnly
 from .serializers import (
-    ShoutSerializer, CreateShoutSerializer, ShoutDetailSerializer,
+    ShoutSerializer, CreateShoutSerializer, 
     UserSerializer, CreateUserSerializer, 
     CommentSerializer, CreateCommentSerializer,)
 
@@ -52,7 +52,7 @@ class ShoutDetailAPI(
     """
     Gives the detail information of the shout
     """
-    serializer_class = ShoutDetailSerializer
+    serializer_class = ShoutSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly,
             IsOwnerOrReadOnly]
 
@@ -64,7 +64,7 @@ class ShoutDetailAPI(
 
     def get(self, request, slug, format=None):
         shout = self.get_object(slug)
-        serializer = ShoutDetailSerializer(shout)
+        serializer = ShoutSerializer(shout, context={'request':request})
         return Response(serializer.data)
     
     def delete(self, request, slug, format=None):

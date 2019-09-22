@@ -21,15 +21,6 @@ class ShoutSerializer(serializers.ModelSerializer):
             return False
 
 
-class ShoutDetailSerializer(serializers.ModelSerializer):
-    shouter = serializers.ReadOnlyField(source='shouter.username')
-    supports = serializers.ReadOnlyField(source='supporters.count')
-
-    class Meta:
-        model = Shout
-        fields = ['slug', 'title', 'body', 'threshold', 'shouter', 'supports', 'date']
-
-
 class CreateShoutSerializer(serializers.ModelSerializer):
 
     shouter = serializers.ReadOnlyField(source='shouter.username')
