@@ -150,7 +150,7 @@ class CreateCommentAPI(generics.CreateAPIView):
         return comment
 
     def perform_create(self, serializer):
-        shout = Shout.objects.get(id=serializer.data['commented_on'])
+        shout = Shout.objects.get(id=serializer.validated_data['commented_on'].id)
         user = self.request.user
         if shout.supporters.count() >= shout.threshold and (user in shout.supporters.all()
                 or user.is_professional):
