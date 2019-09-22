@@ -212,7 +212,7 @@ class DiscussionList(
                 comment = {}
                 comment['user'] = each.commented_by.username
                 comment['date'] = each.created_at
-                context['text'] = each.text
+                comment['text'] = each.text
                 context['comments'].append(comment)
             return Response(context)
         else:
