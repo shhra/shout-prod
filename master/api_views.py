@@ -203,3 +203,15 @@ class DiscussionList(generics.ListAPIView):
         else:
             raise Http404
 
+
+# Views related to self
+class MeView(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+            IsOwnerOrReadOnly]
+    def get(self, request, format=None):
+        user = self.request.user
+        context = {}
+        if user.is_authenticated:
+            context['me'] = user.username
+            return Response(context)
+

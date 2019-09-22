@@ -9,7 +9,7 @@ from .views import (
 from .api_views import (
         CreateShoutAPI, ShoutListAPI, ShoutDetailAPI, SupportShoutAPI,
         CommentListAPI, CreateCommentAPI, CommentDetailAPI,
-        UserDetailAPI, UserListAPI, SignupAPI, DiscussionList,
+        UserDetailAPI, UserListAPI, SignupAPI, DiscussionList, MeView,
         APIRoot, )
 
 app_name = 'master'
@@ -36,6 +36,7 @@ urlpatterns = [
     path('api/s/<slug:slug>/discussion/', DiscussionList.as_view(), name='support_discussion_api'),
 
     path('api/user/', UserListAPI.as_view(), name='user_list_api'),
+    path('api/me/', MeView.as_view(), name='about_me'),
     path('api/user/<str:username>/', UserDetailAPI.as_view(), name='customuser-detail'),
     path('api/signup', SignupAPI.as_view(), name='user_signup_api'),
 
