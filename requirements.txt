@@ -2,7 +2,6 @@ Django==2.2
 pytz==2018.9
 sqlparse==0.3.0
 djangorestframework
-https://download.pytorch.org/whl/cpu/torch-1.0.1.post2-cp36-cp36m-linux_x86_64.whl
 gunicorn
 django-allauth
 django-rest-auth
