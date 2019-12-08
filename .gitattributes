@@ -1,1 +1,4 @@
 *.bin filter=lfs diff=lfs merge=lfs -text
+language_model/modules.json filter=lfs diff=lfs merge=lfs -text
+language_model/0_BERT filter=lfs diff=lfs merge=lfs -text
+language_model/1_Pooling filter=lfs diff=lfs merge=lfs -text
