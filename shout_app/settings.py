@@ -192,13 +192,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 STATIC_URL = '/staticfiles/'
 if not DEBUG:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATIC_ROOT = os.path.join(BASE_DIR, '..', 'www' 'staticfiles')
 else:
     STATICFILES_DIRS = (os.path.join(BASE_DIR, 'staticfiles'), )
 
 # Media
 MEDIA_URL = '/mediafiles/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+MEDIA_ROOT = os.path.join(BASE_DIR, '..','www','mediafiles')
 
 # Redirects
 LOGIN_URL = 'account_login'
