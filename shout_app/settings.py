@@ -28,8 +28,8 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'qo&pp(lwt1=rl&zip_dc=tjw9wrbit7i2xr+v=8u&m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = ['0.0.0.0',
-        'theshoutit.herokuapp.com']
+ALLOWED_HOSTS = ['*',
+        ]
 
 
 REST_FRAMEWORK = {
@@ -77,7 +77,7 @@ MIDDLEWARE = [
 CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ORIGIN_WHITELIST = [
-        'http://0.0.0.0:8000',
+        '*',
         'http://localhost:3000',
         'http://theshouit.herokuapp.com',
         'https://rnattest.web.app',
@@ -120,8 +120,16 @@ if DEBUG:
         }
     }
 else:
-    DATABASES = {}
-    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
+    DATABASES = {
+        'default': {
+            'ENGINE': os.getenv('SQL_ENGINE'),
+            'NAME': os.getenv('RDS_DB_NAME'),
+            'USER': os.getenv('RDS_USERNMAE'),
+            'PASSWORD': os.getenv('RDS_PASSWORD'),
+            'HOST': os.getenv('RDS_HOSTNAME'),
+            'PORT': os.getenv('RDS_PORT')
+        }
+    }
 # USER CLASS
 AUTH_USER_MODEL = 'master.CustomUser'
 
