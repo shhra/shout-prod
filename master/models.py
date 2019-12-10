@@ -4,7 +4,7 @@ import pickle
 from sentence_transformers import SentenceTransformer
 
 # Language Model
-model_path = '/home/wsgi/language_model/'
+model_path = 'language_model/'
 embedder = SentenceTransformer(model_path)
 """
 Core Tables
