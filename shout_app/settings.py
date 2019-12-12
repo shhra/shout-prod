@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 #- SECRET_KEY='qo&pp(lwt1=rl&zip_dc=tjw9wrbit7i2xr+v=8u&mxw$o+ym2'
-SECRET_KEY = os.getenv('SECRET_KEY', 'qo&pp(lwt1=rl&zip_dc=tjw9wrbit7i2xr+v=8u&mxw$o+ym2')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
@@ -77,7 +77,6 @@ MIDDLEWARE = [
 CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ORIGIN_WHITELIST = [
-        '*',
         'http://localhost:3000',
         'http://theshouit.herokuapp.com',
         'https://rnattest.web.app',

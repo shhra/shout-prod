@@ -164,8 +164,6 @@ class Shout(DateTimeModel):
             # Truncate & Minus 1 for the hyphen.
             self.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
         encoded_value = get(f'{url}?shout={self.body}')
-        print(f'{url}?shout={self.body}')
-        print(encoded_value)
         self.value = encoded_value.content
         super(Shout, self).save(*args, **kwargs)
 
