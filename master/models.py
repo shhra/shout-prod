@@ -1,14 +1,10 @@
 import itertools
 import uuid
-import pickle
-from sentence_transformers import SentenceTransformer
-
-# Language Model
-model_path = 'language_model/'
-embedder = SentenceTransformer(model_path)
+from requests import get
 """
 Core Tables
 """
+
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils.text import slugify
@@ -16,6 +12,8 @@ from django.urls import reverse
 from django.utils import timezone
 from allauth.account.models import EmailAddress
 
+
+url = 'http://127.0.0.1:5000/encode'
 
 class SoftDeletionManager(models.Manager):
     def __init__(self, *args, **kwargs):
@@ -165,7 +163,10 @@ class Shout(DateTimeModel):
                 break
             # Truncate & Minus 1 for the hyphen.
             self.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
-        self.value = pickle.dumps(embedder.encode([self.body]))
+        encoded_value = get(f'{url}?shout={self.body}')
+        print(f'{url}?shout={self.body}')
+        print(encoded_value)
+        self.value = encoded_value.content
         super(Shout, self).save(*args, **kwargs)
 
     def get_absolute_url(self):

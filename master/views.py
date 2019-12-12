@@ -74,12 +74,12 @@ class EchoList(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         shout = self.get_object()
-        query_embedding = np.array(pickle.loads(shout.value)).reshape(1, -1)
+        query_embedding = np.array(pickle.loads(shout.value)[0]).reshape(1, -1)
         corpus = Shout.objects.all().exclude(id=shout.id)
         corpus_embedding = np.zeros((len(corpus), query_embedding.shape[1]))
         context['shouts'] = []
         for i, each in enumerate(corpus):
-            corpus_embedding[i] = np.array(pickle.loads(each.value)).reshape(1, -1)
+            corpus_embedding[i] = np.array(pickle.loads(each.value)[0]).reshape(1, -1)
         distances = scipy.spatial.distance.cdist(
                 query_embedding,
                 corpus_embedding, 
