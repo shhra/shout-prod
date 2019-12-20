@@ -13,7 +13,7 @@ from django.utils import timezone
 from allauth.account.models import EmailAddress
 
 
-url = 'http://127.0.0.1:5000/encode'
+# url = 'http://127.0.0.1:5000/encode'
 
 class SoftDeletionManager(models.Manager):
     def __init__(self, *args, **kwargs):
@@ -163,8 +163,8 @@ class Shout(DateTimeModel):
                 break
             # Truncate & Minus 1 for the hyphen.
             self.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
-        encoded_value = get(f'{url}?shout={self.body}')
-        self.value = encoded_value.content
+        # encoded_value = get(f'{url}?shout={self.body}')
+        # self.value = encoded_value.content
         super(Shout, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
