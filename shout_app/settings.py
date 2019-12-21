@@ -22,7 +22,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#- SECRET_KEY='qo&pp(lwt1=rl&zip_dc=tjw9wrbit7i2xr+v=8u&mxw$o+ym2'
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -82,6 +81,7 @@ CORS_ORIGIN_WHITELIST = [
         'https://rnattest.web.app',
         'https://rnattest.firebaseapp.com',
         'http://rnattest.firbase.app',
+        'https://master.d2t99fmhc8jbjo.amplifyapp.com/'
 ]
 
 ROOT_URLCONF = 'shout_app.urls'
