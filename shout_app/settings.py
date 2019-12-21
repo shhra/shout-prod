@@ -81,7 +81,7 @@ CORS_ORIGIN_WHITELIST = [
         'https://rnattest.web.app',
         'https://rnattest.firebaseapp.com',
         'http://rnattest.firbase.app',
-        'https://master.d2t99fmhc8jbjo.amplifyapp.com/'
+        'https://master.d2t99fmhc8jbjo.amplifyapp.com/',
 ]
 
 ROOT_URLCONF = 'shout_app.urls'
