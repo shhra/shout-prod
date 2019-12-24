@@ -84,6 +84,8 @@ CORS_ORIGIN_WHITELIST = [
         'https://master.d2t99fmhc8jbjo.amplifyapp.com/',
 ]
 
+CSRF_TRUSTED_ORIGINS = ['master.d2t99fmhc8jbjo.amplifyapp.com']
+
 ROOT_URLCONF = 'shout_app.urls'
 
 TEMPLATES = [
@@ -123,7 +125,7 @@ else:
         'default': {
             'ENGINE': os.getenv('SQL_ENGINE'),
             'NAME': os.getenv('RDS_DB_NAME'),
-            'USER': os.getenv('RDS_USERNMAE'),
+            'USER': os.getenv('RDS_USERNAME'),
             'PASSWORD': os.getenv('RDS_PASSWORD'),
             'HOST': os.getenv('RDS_HOSTNAME'),
             'PORT': os.getenv('RDS_PORT')
