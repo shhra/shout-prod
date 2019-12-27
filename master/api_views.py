@@ -153,7 +153,7 @@ class CreateCommentAPI(generics.CreateAPIView):
         shout = Shout.objects.get(id=serializer.validated_data['commented_on'].id)
         user = self.request.user
         if shout.supporters.count() >= shout.threshold and (user in shout.supporters.all()
-                or user.is_professional):
+                or user.is_professional or shout.shouter==user):
             serializer.save(commented_by=self.request.user)
         else:
             raise Http404
@@ -214,6 +214,7 @@ class DiscussionList(
             comments = Comment.objects.all().filter(commented_on=shout.id)
             context['shout_id'] = shout.id
             context['shout_slug'] = shout.slug
+            context['is_shouter'] = True if shout.shouter == user else False
             context['comments'] = []
             for each in comments:
                 comment = {}
