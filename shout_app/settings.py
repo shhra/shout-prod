@@ -78,7 +78,8 @@ CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ORIGIN_WHITELIST = [
         'http://localhost:3000',
-        'http://apprester.com',
+        'https://apprester.com',
+        'https://www.apprester.com',
 ]
 
 CSRF_TRUSTED_ORIGINS = ['master.d2t99fmhc8jbjo.amplifyapp.com']
