@@ -130,7 +130,7 @@ class SupportShoutAPI(APIView):
                 supported = False
                 shout.supporters.remove(user)
             else:
-                return Http404
+                return HttpResponseForbidden
             updated = True
             data = {
                     'supported': supported
@@ -163,7 +163,7 @@ class CreateCommentAPI(generics.CreateAPIView):
                 or user.is_professional or shout.shouter==user):
             serializer.save(commented_by=self.request.user)
         else:
-            raise Http404
+            return HttpResponseForbidden
 
 
 class CommentDetailAPI(APIView):
@@ -188,7 +188,7 @@ class CommentDetailAPI(APIView):
     def delete(self, request, slug, format=None):
         comment = self.get_object(slug)
         if not (comment.commented_by == self.request.user or self.request.user.is_professional):
-            raise Http404
+           return HttpResponseForbidden
         else:
            comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -231,7 +231,7 @@ class DiscussionList(
                 context['comments'].append(comment)
             return Response(context)
         else:
-            raise Http404
+            return HttpResponseForbidden
         
 
 # Views related to self
