@@ -15,17 +15,17 @@ from .api_views import (
 app_name = 'master'
 
 urlpatterns = [
-    path('s/', AllShouts.as_view(), name='shouts'),
-    path('s/create/', CreateShout.as_view(), name='create_shout'),
-    path('s/<slug:slug>/', ShoutDetail.as_view(), name='shout_detail'),
-    path('s/<slug:slug>/delete/', DeleteShout.as_view(), name='delete_shout'),
-    path('s/<slug:slug>/support/', SupportShout.as_view(), name='support_shout'),
-    path('s/<slug:slug>/discussion/', DiscussionDetail.as_view(), name='shout_discussion'),
-    path('u/<str:username>/', UserDetail.as_view(), name='user_detail'),
-    path('u/settings', UserSettings.as_view(), name='user_settings'),
-    path('c/<slug:slug>/comment/', CreateComment.as_view(), name='create_comment'),
-    path('c/<slug:slug>/comment/delete', DeleteComment.as_view(), name='delete_comment'),
-    path('c/<slug:slug>/echoed', EchoList.as_view(), name='echo_shout'),
+    # path('s/', AllShouts.as_view(), name='shouts'),
+    # path('s/create/', CreateShout.as_view(), name='create_shout'),
+    # path('s/<slug:slug>/', ShoutDetail.as_view(), name='shout_detail'),
+    # path('s/<slug:slug>/delete/', DeleteShout.as_view(), name='delete_shout'),
+    # path('s/<slug:slug>/support/', SupportShout.as_view(), name='support_shout'),
+    # path('s/<slug:slug>/discussion/', DiscussionDetail.as_view(), name='shout_discussion'),
+    # path('u/<str:username>/', UserDetail.as_view(), name='user_detail'),
+    # path('u/settings', UserSettings.as_view(), name='user_settings'),
+    # path('c/<slug:slug>/comment/', CreateComment.as_view(), name='create_comment'),
+    # path('c/<slug:slug>/comment/delete', DeleteComment.as_view(), name='delete_comment'),
+    # path('c/<slug:slug>/echoed', EchoList.as_view(), name='echo_shout'),
 
     # api urls
     path('api/', APIRoot.as_view(), name='api_root'),

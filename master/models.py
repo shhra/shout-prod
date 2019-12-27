@@ -1,6 +1,8 @@
 import itertools
 import uuid
+import re
 from requests import get
+from random import randint
 """
 Core Tables
 """
@@ -149,7 +151,10 @@ class Shout(DateTimeModel):
 
     def save(self, *args, **kwargs):
         max_length = Shout._meta.get_field('title').max_length
-        self.slug = orig = slugify(self.title)[:max_length]
+        value = self.title
+        if not re.search("^[a-zA-Z0-9]", self.title) :
+            value = value + str(chr(randint(65, 90))) + str(chr(randint(97, 122)))
+        self.slug = orig = slugify(value)[:max_length]
 
         for x in itertools.count(1):
             if self.id:

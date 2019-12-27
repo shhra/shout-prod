@@ -32,8 +32,9 @@ ALLOWED_HOSTS = ['*',
 
 
 REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     )
 }
@@ -77,11 +78,7 @@ CORS_ORIGIN_ALLOW_ALL = False
 
 CORS_ORIGIN_WHITELIST = [
         'http://localhost:3000',
-        'http://theshouit.herokuapp.com',
-        'https://rnattest.web.app',
-        'https://rnattest.firebaseapp.com',
-        'http://rnattest.firbase.app',
-        'https://master.d2t99fmhc8jbjo.amplifyapp.com/',
+        'http://apprester.com',
 ]
 
 CSRF_TRUSTED_ORIGINS = ['master.d2t99fmhc8jbjo.amplifyapp.com']
