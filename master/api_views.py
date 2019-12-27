@@ -1,4 +1,4 @@
-from django.http import Http404, request
+from django.http import Http404, request, HttpResponseForbidden
 from django.shortcuts import (
         redirect, get_object_or_404)
 from rest_framework import (generics, mixins, permissions, status)
@@ -12,7 +12,7 @@ from .serializers import (
     ShoutSerializer, CreateShoutSerializer, 
     UserSerializer, CreateUserSerializer, 
     CommentSerializer, CreateCommentSerializer,)
-
+from datetime import datetime, timedelta
 
 class APIRoot(APIView):
 
@@ -43,7 +43,14 @@ class CreateShoutAPI(generics.CreateAPIView):
             IsOwnerOrReadOnly]
 
     def perform_create(self, serializer):
-        serializer.save(shouter=self.request.user)
+        user = self.request.user
+        past_ten = datetime.now() - timedelta(minutes=10)
+        shouts = Shout.objects.all().filter(shouter=user,
+                                            created_at__gte=past_ten)
+        if len(shouts) < 5:
+            serializer.save(shouter=self.request.user)
+        else:
+            return HttpResponseForbidden
 
 
 class ShoutDetailAPI(
