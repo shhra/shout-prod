@@ -137,7 +137,7 @@ class Shout(DateTimeModel):
     """
     title = models.CharField(max_length=150)
     slug = models.SlugField(max_length=80, unique=True, default=uuid.uuid4, null=True)
-    body = models.CharField(max_length=9999)
+    body = models.CharField(max_length=420)
     sentiment = models.CharField(max_length=8, default='NEUTRAL')
     value = models.BinaryField(max_length=4000, null=True, blank=True, default=None)
     shouter = models.ForeignKey(CustomUser, on_delete=models.CASCADE,
