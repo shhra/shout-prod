@@ -30,5 +30,5 @@ urlpatterns = [
     path('api/request-auth-token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/request-auth-token/verify', TokenVerifyView.as_view(), name='token_verify'),
     path('api-auth/', include('rest_auth.urls')),
-    path('api-auth/signup/', include('rest_auth.registration.urls'))
+    path('api/signup/', include('rest_auth.registration.urls'))
 ]

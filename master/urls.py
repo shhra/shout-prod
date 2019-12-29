@@ -38,7 +38,7 @@ urlpatterns = [
     path('api/user/', UserListAPI.as_view(), name='user_list_api'),
     path('api/me/', MeView.as_view(), name='about_me'),
     path('api/user/<str:username>/', UserDetailAPI.as_view(), name='customuser-detail'),
-    path('api/signup', SignupAPI.as_view(), name='user_signup_api'),
+    # path('api/signup', SignupAPI.as_view(), name='user_signup_api'),
 
     path('api/c/', CommentListAPI.as_view(), name='comment_api'),
     path('api/c/create/', CreateCommentAPI.as_view(), name='create_comment_api'),
