@@ -35,7 +35,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
 
@@ -53,10 +53,14 @@ INSTALLED_APPS = [
     'master',
     'rest_framework',
     'rest_framework.authtoken',
+
     'rest_auth',
+    'rest_auth.registration',
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+
     'corsheaders',
 ]
 SITE_ID = 1
@@ -152,12 +156,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Django AuthALL
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS =1
-ACCOUNT_EMAIL_REQUIRED = None
+ACCOUNT_EMAIL_REQUIRED = False
 ACCOUNT_EMAIL_VERIFICATION = "optional"
 ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 86400 # 1 day in seconds
 ACCOUNT_LOGOUT_REDIRECT_URL ='/'
 LOGIN_REDIRECT_URL = 'master:home' 
+ACCOUNT_ACTIVATION_DAYS = 1
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
@@ -169,10 +174,11 @@ ACCOUNT_FORMS = {
 }
 # EMAIL CLIENT
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = 'tifyspott80@gmail.com'
-EMAIL_HOST_PASSWORD = 'random'
+EMAIL_HOST = 'email-smtp.us-east-1.amazonaws.com'
+EMAIL_PORT = 25
+# EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = os.getenv('EMAIL_USER')
+EMAIL_HOST_USER = os.getenv('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
