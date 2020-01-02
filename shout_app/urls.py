@@ -23,12 +23,11 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
     # path('admin/', admin.site.urls),
-    path('', include('master.urls')),
-    path('api/', include('rest_framework.urls')),
-    path('', include('allauth.urls')),
+    path('', include('shout_app.authentication.urls')),
+    path('', include('shout_app.profile.urls')),
+    path('', include('shout_app.shouts.urls')),
     path('api/request-auth-token', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/request-auth-token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/request-auth-token/verify', TokenVerifyView.as_view(), name='token_verify'),
-    path('api-auth/', include('rest_auth.urls')),
     path('api/signup/', include('rest_auth.registration.urls'))
 ]

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 import dj_database_url
+from datetime import timedelta
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -32,6 +33,8 @@ ALLOWED_HOSTS = ['*',
 
 
 REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'shout_app.core.exceptions.core_exception_handler',
+    'NONE_FIELD_ERRORS_KEY': 'error_message',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -41,6 +44,10 @@ REST_FRAMEWORK = {
 
 # Application definition
 REST_USE_JWT = True
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1)
+}
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -50,7 +57,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'master',
+    'django_extensions',
+    'shout_app.authentication',
+    'shout_app.profile',
+    'shout_app.shouts',
     'rest_framework',
     'rest_framework.authtoken',
 
@@ -134,7 +144,7 @@ else:
         }
     }
 # USER CLASS
-AUTH_USER_MODEL = 'master.CustomUser'
+AUTH_USER_MODEL = 'authentication.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -173,9 +183,10 @@ ACCOUNT_FORMS = {
     'signup': 'master.forms.SignUpForm',
 }
 # EMAIL CLIENT
+DEFAULT_FROM_EMAIL = "no-reply@apprester.com"
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'email-smtp.us-east-1.amazonaws.com'
-EMAIL_PORT = 25
+EMAIL_PORT = 587
 # EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = os.getenv('EMAIL_USER')
 EMAIL_HOST_USER = os.getenv('EMAIL_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
