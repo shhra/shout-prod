@@ -12,5 +12,6 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
 
-        return obj.shouter == request.user
+        return obj.shouter == request.user.profile \
+                or obj.commented_by == request.user.profile
 

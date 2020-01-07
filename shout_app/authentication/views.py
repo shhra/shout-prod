@@ -16,3 +16,9 @@ class LoginAPIView(APIView):
 
         return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
+
+class EmailConfirmAPIView(APIView):
+
+    def get(self, request, key):
+        return Response(key, status=status.HTTP_200_OK)
+

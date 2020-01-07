@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import  Shout, Comment, Discussion
 from shout_app.profile.serializers import ProfileSerializer
 from shout_app.authentication.models import User
+from shout_app.profile.models import Profile
 from django.http import Http404
 
 
@@ -64,5 +65,29 @@ class CommentSerializer(serializers.ModelSerializer):
 
     def get_updated_at(self, instance):
         return instance.updated_at.isoformat()
+
+
+class UserSerializer(serializers.ModelSerializer):                           
+    class Meta:                                   
+        model = User
+        fields = ['username', 'email']
+
+
+class GenericNotificationRelatedField(serializers.RelatedField):
+
+    def to_representation(self, value):
+        if isinstance(value, User):
+            serializer = UserSerializer(value)
+        return serializer.data
+
+
+class NotificationSerializer(serializers.Serializer):
+    recipient = UserSerializer(read_only=True)
+    unread = serializers.BooleanField(read_only=True)
+    target = GenericNotificationRelatedField(read_only=True)
+    verb = serializers.CharField()
+
+
+
 
 

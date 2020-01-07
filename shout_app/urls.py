@@ -20,6 +20,8 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView, TokenVerifyView,
 )
+from rest_auth.registration.views import RegisterView
+
 urlpatterns = [
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
     # path('admin/', admin.site.urls),
@@ -29,5 +31,5 @@ urlpatterns = [
     path('api/request-auth-token', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/request-auth-token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/request-auth-token/verify', TokenVerifyView.as_view(), name='token_verify'),
-    path('api/signup/', include('rest_auth.registration.urls'))
+    path('api/signup/', RegisterView.as_view(), name='account_signup'),
 ]

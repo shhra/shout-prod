@@ -72,6 +72,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
 
     'corsheaders',
+    'notifications',
 ]
 SITE_ID = 1
 
@@ -83,7 +84,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 ]
 
@@ -95,8 +95,6 @@ CORS_ORIGIN_WHITELIST = [
         'https://apprester.com',
         'https://www.apprester.com',
 ]
-
-CSRF_TRUSTED_ORIGINS = ['master.d2t99fmhc8jbjo.amplifyapp.com']
 
 ROOT_URLCONF = 'shout_app.urls'
 
