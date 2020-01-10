@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'shout_app.authentication',
     'shout_app.profile',
     'shout_app.shouts',
+    'shout_app.core',
     'rest_framework',
     'rest_framework.authtoken',
 
@@ -74,7 +75,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'notifications',
 ]
-SITE_ID = 1
+
+SITE_ID = 2
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -101,7 +103,7 @@ ROOT_URLCONF = 'shout_app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR,'templates', 'allauth')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR,'templates', 'allauth', 'account')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

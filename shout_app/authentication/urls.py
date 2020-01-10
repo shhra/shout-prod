@@ -1,11 +1,11 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import url
-from .views import LoginAPIView, EmailConfirmAPIView
+from .views import LoginAPIView, EmailConfirmAPIView, VerifyEmailView
 from rest_auth.views import (LogoutView, PasswordChangeView,
     PasswordResetView, PasswordResetConfirmView)
-from rest_auth.registration.views import VerifyEmailView
 
+app_name = "authentication"
 
 urlpatterns = [
     path('api/login/', LoginAPIView.as_view(), name='account_login'),
