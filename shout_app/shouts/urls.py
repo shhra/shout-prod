@@ -2,7 +2,8 @@ from django.urls import include, path, re_path
 from rest_framework.routers import DefaultRouter
 
 from .views import (ShoutViewSet, ShoutSupportAPIView, CommentListCreateAPIView,
-        CommentDestroyAPIView, MeView, NotificationViewSet)
+        CommentDestroyAPIView, MeView, NotificationViewSet, NotificationReadView,
+        NotificationAllReadView)
 
 app_name = 'master'
 router = DefaultRouter(trailing_slash=False)
@@ -16,7 +17,9 @@ urlpatterns = [
     path('api/s/<slug:shout_slug>/comment/<slug:comment_slug>/', 
         CommentDestroyAPIView.as_view(), name='comment_delete_api'),
     path('api/me', MeView.as_view(), name='about_me'),
-    path('api/n/unread', NotificationViewSet.as_view({'get':'list'}), name='notification_unread')
+    path('api/n/unread', NotificationViewSet.as_view({'get':'list'}), name='notification_unread'),
+    path('api/n/readall', NotificationAllReadView.as_view(), name='notification_all'),
+    path('api/n/read/<slug:shout>/<int:id>', NotificationReadView.as_view(), name='notification_read'),
 ]
 
 

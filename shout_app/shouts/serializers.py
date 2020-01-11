@@ -4,6 +4,7 @@ from shout_app.profile.serializers import ProfileSerializer
 from shout_app.authentication.models import User
 from shout_app.profile.models import Profile
 from django.http import Http404
+from rest_framework.response import Response
 
 
 class ShoutSerializer(serializers.ModelSerializer):
@@ -70,7 +71,13 @@ class CommentSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):                           
     class Meta:                                   
         model = User
-        fields = ['username', 'email']
+        fields = ['username']
+
+
+class ShoutNotificationSerializer(serializers.ModelSerializer):                           
+    class Meta:                                   
+        model = Shout
+        fields = ['slug']
 
 
 class GenericNotificationRelatedField(serializers.RelatedField):
@@ -78,13 +85,17 @@ class GenericNotificationRelatedField(serializers.RelatedField):
     def to_representation(self, value):
         if isinstance(value, User):
             serializer = UserSerializer(value)
+        if isinstance(value, Shout):
+            serializer = ShoutNotificationSerializer(value)
         return serializer.data
 
 
 class NotificationSerializer(serializers.Serializer):
+    pk = serializers.PrimaryKeyRelatedField(read_only=True)
     recipient = UserSerializer(read_only=True)
     unread = serializers.BooleanField(read_only=True)
     target = GenericNotificationRelatedField(read_only=True)
+    action_object = GenericNotificationRelatedField(read_only=True)
     verb = serializers.CharField()
 
 

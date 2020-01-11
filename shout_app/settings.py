@@ -221,5 +221,5 @@ LOGIN_URL = 'account_login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
-#heroku
-# django_heroku.settings(locals)
+#NOTICATIONs
+DJANGO_NOTIFICATIONS_CONFIG = { 'USE_JSONFIELD': True}

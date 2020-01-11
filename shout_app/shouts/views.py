@@ -1,3 +1,4 @@
+from django.shortcuts import redirect
 from rest_framework import generics, mixins, status, viewsets
 from rest_framework.exceptions import NotFound, NotAcceptable
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly
@@ -19,7 +20,7 @@ class ShoutViewSet(mixins.CreateModelMixin,
         viewsets.GenericViewSet):
     lookup_field = 'slug'
     queryset = Shout.objects.all().order_by('-created_at')
-    permission_classes = (IsAuthenticatedOrReadOnly, AllowAny)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     serializer_class = ShoutSerializer
 
     def get_queryset(self):
@@ -73,8 +74,6 @@ class ShoutViewSet(mixins.CreateModelMixin,
         except Shout.DoesNotExist:
             raise NotFound("No one has shouted this.")
 
-        print(serializer_instance.shouter)
-        print(request.user.profile)
         if request.user.profile == serializer_instance.shouter:
             serializer_instance.delete()
         else:
@@ -93,7 +92,23 @@ class ShoutSupportAPIView(APIView):
             shout = Shout.objects.get(slug=slug)
         except Shout.DoesNotExist:
             raise NotFound('No one has shouted this')
+
+        recipient = shout.shouter.user
+        if shout.supported_by.count() >= shout.threshold:
+            notif_discussion = Notification.objects.all().filter(
+                    target_object_id=shout.id,
+                    description="discussion"
+                )
+            notif_discussion.delete()
+
+        notif = recipient.notifications.get(
+                actor_object_id=profile.user.id,
+                target_object_id=shout.id,
+                description="support")
+
         profile.not_support(shout)
+        notif.delete()
+
         serializer = self.serializer_class(shout, context=serializer_context)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -106,11 +121,30 @@ class ShoutSupportAPIView(APIView):
         except Shout.DoesNotExist:
             raise NotFound('No one has shouted this')
         if shout.supported_by.count() < shout.threshold:
+            shouter = shout.shouter.user
             profile.support(shout)
-            notify.send(profile.user, recipient=shout.shouter.user,
-                    verb=(f"{profile.user} has supported your shout."))
-        else:
-            raise NotAcceptable('You can\'t support it anymore')
+            try:
+                notif = shouter.notifications.get(
+                        actor_object_id=self.request.user.id,
+                        target_object_id=shout.id,
+                        description="support")
+                if notif:
+                    pass
+            except:
+                notify.send(profile.user,
+                        recipient=shouter,
+                        target=shout,
+                        description="support",
+                        verb=(f"{profile.user} has supported the shout about {shout.title}."))
+                if shout.supported_by.count() == shout.threshold:
+                    recipients = [recipient.user for recipient in shout.supported_by.all()]
+                    notify.send(profile.user,
+                                recipient=recipients,
+                                target=shout,
+                                description="discussion",
+                                verb=(f"Discussion is unlocked for the shout about {shout.title}."))
+            else:
+                raise NotAcceptable('You can\'t support it anymore')
         serializer = self.serializer_class(shout, context=serializer_context)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -220,9 +254,34 @@ class MeView(APIView):
 
 class NotificationViewSet(viewsets.ViewSet):
     serializer_class = NotificationSerializer
+    permission_classes = (IsOwnerOrReadOnly,)
 
     def list(self, request):
-        queryset = Notification.objects.unread().filter(recipient=self.request.user)
+        user = self.request.user
+        queryset = user.notifications.all()
         return Response(NotificationSerializer(queryset, many=True).data)
 
 
+class NotificationReadView(generics.GenericAPIView):
+    permission_classes = (IsOwnerOrReadOnly,)
+
+    def get(self, request, *args, **kwargs):
+        try:
+            shout = Shout.objects.get(slug=kwargs['shout'])
+        except Shout.DoesNotExist:
+            raise NotFound("No one has shouted this.")
+        notif = Notification.objects.get(id=kwargs['id'])
+        notif.mark_as_read()
+        data = {"data": {"shout": shout.slug}}
+        return Response(data, status=status.HTTP_200_OK)
+
+
+class NotificationAllReadView(generics.GenericAPIView):
+    permission_classes = (IsOwnerOrReadOnly,)
+
+    def get(self, request):
+        user = self.request.user
+        notifs = user.notifications.all()
+        notifs.mark_all_as_read()
+        data = {"read"}
+        return Response("read", status=status.HTTP_200_OK)
