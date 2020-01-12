@@ -10,6 +10,7 @@ from notifications.signals import notify
 
 from .models import Shout, Comment, Discussion
 from .serializers import ShoutSerializer, CommentSerializer, NotificationSerializer
+from shout_app.profile.serializers import ProfileSerializer
 from shout_app.core.permissions import IsOwnerOrReadOnly
 from datetime import datetime, timedelta
 
@@ -243,13 +244,14 @@ class CommentDestroyAPIView(generics.DestroyAPIView):
 class MeView(APIView):
     permission_classes = (IsAuthenticatedOrReadOnly,
             IsOwnerOrReadOnly)
+    serializer_class = ProfileSerializer
+
 
     def get(self, request, format=None):
-        user = self.request.user
+        user = self.request.user.profile
         context = {}
-        if user.is_authenticated:
-            context['me'] = user.username
-            return Response(context, status=status.HTTP_200_OK)
+        context['data'] = self.serializer_class(user).data
+        return Response(context, status=status.HTTP_200_OK)
 
 
 class NotificationViewSet(viewsets.ViewSet):

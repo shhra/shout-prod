@@ -17,12 +17,13 @@ class ShoutSerializer(serializers.ModelSerializer):
     created_at = serializers.SerializerMethodField(method_name='get_created_at')
     slug = serializers.SlugField(required=False)
     discussion_status = serializers.SerializerMethodField(method_name='get_discussion_status')
+    is_shouter = serializers.SerializerMethodField(method_name='get_is_shouter')
 
     class Meta:
         model = Shout
         fields = ['slug', 'title', 'body', 'shouter',
                 'threshold', 'supported', 'supports_count',
-                'created_at', 'discussion_status', ]
+                'created_at', 'discussion_status', 'is_shouter']
 
     def create(self, validated_data):
         shouter = self.context.get('shouter', None)
@@ -45,6 +46,14 @@ class ShoutSerializer(serializers.ModelSerializer):
 
     def get_discussion_status(self, instance):
         return True if self.get_supports_count(instance) == instance.threshold else False
+
+    def get_is_shouter(self, instance):
+        request = self.context.get('request', None)
+        if request is None:
+            return False
+        if not request.user.is_authenticated:
+            return False
+        return True if instance.shouter == request.user.profile else False
 
 
 class CommentSerializer(serializers.ModelSerializer):

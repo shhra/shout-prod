@@ -22,6 +22,8 @@ class ProfileRetrieveAPIView(RetrieveAPIView):
         serializer = self.serializer_class(profile, context={
             'request': request
         })
+        context = {}
+        context['data'] = serializer.data
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(context, status=status.HTTP_200_OK)
 
