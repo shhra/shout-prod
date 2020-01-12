@@ -152,7 +152,7 @@ class ShoutSupportAPIView(APIView):
 class CommentListCreateAPIView(generics.ListCreateAPIView):
     lookup_field = 'commented_on__slug'
     lookup_url_kwarg =  'slug'
-    permission_classes = (IsAuthenticatedOrReadOnly,  IsOwnerOrReadOnly,)
+    permission_classes = (IsOwnerOrReadOnly,)
     queryset = Comment.objects.select_related(
             'commented_on', 'commented_on__shouter', 'commented_on__shouter__user', 
             'commented_by', 'commented_by__user'

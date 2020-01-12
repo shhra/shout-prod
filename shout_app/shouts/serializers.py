@@ -16,12 +16,13 @@ class ShoutSerializer(serializers.ModelSerializer):
             method_name='get_supports_count')
     created_at = serializers.SerializerMethodField(method_name='get_created_at')
     slug = serializers.SlugField(required=False)
+    discussion_status = serializers.SerializerMethodField(method_name='get_discussion_status')
 
     class Meta:
         model = Shout
         fields = ['slug', 'title', 'body', 'shouter',
                 'threshold', 'supported', 'supports_count',
-                'created_at', ]
+                'created_at', 'discussion_status', ]
 
     def create(self, validated_data):
         shouter = self.context.get('shouter', None)
@@ -42,12 +43,16 @@ class ShoutSerializer(serializers.ModelSerializer):
     def get_supports_count(self, instance):
         return instance.supported_by.count()
 
+    def get_discussion_status(self, instance):
+        return True if self.get_supports_count(instance) == instance.threshold else False
+
 
 class CommentSerializer(serializers.ModelSerializer):
     commented_by = ProfileSerializer(required=False)
     commented_on = ShoutSerializer(required=False)
     created_at = serializers.SerializerMethodField(method_name='get_created_at')
     updated_at = serializers.SerializerMethodField(method_name='get_updated_at')
+    is_shouter = serializers.SerializerMethodField(method_name='get_is_supporter')
 
     class Meta:
         model = Comment
