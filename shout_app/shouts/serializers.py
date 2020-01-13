@@ -65,7 +65,8 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ['slug', 'commented_by', 'commented_on', 'text', 'created_at', 'updated_at']
+        fields = ['slug', 'commented_by', 'commented_on', 'text',
+                'created_at', 'updated_at', 'is_shouter']
 
     def create(self, validated_data):
         shout = self.context['commented_on']

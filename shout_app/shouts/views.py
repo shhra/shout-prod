@@ -268,14 +268,9 @@ class NotificationReadView(generics.GenericAPIView):
     permission_classes = (IsOwnerOrReadOnly,)
 
     def get(self, request, *args, **kwargs):
-        try:
-            shout = Shout.objects.get(slug=kwargs['shout'])
-        except Shout.DoesNotExist:
-            raise NotFound("No one has shouted this.")
         notif = Notification.objects.get(id=kwargs['id'])
         notif.mark_as_read()
-        data = {"data": {"shout": shout.slug}}
-        return Response(data, status=status.HTTP_200_OK)
+        return Response("ok", status=status.HTTP_200_OK)
 
 
 class NotificationAllReadView(generics.GenericAPIView):
