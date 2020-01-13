@@ -19,7 +19,7 @@ urlpatterns = [
     path('api/me', MeView.as_view(), name='about_me'),
     path('api/n/unread', NotificationViewSet.as_view({'get':'list'}), name='notification_unread'),
     path('api/n/readall', NotificationAllReadView.as_view(), name='notification_all'),
-    path('api/n/read/<slug:shout>/<int:id>', NotificationReadView.as_view(), name='notification_read'),
+    path('api/n/read/<int:id>', NotificationReadView.as_view(), name='notification_read'),
 ]
 
 
