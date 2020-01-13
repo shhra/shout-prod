@@ -260,7 +260,7 @@ class NotificationViewSet(viewsets.ViewSet):
 
     def list(self, request):
         user = self.request.user
-        queryset = user.notifications.all()
+        queryset = user.notifications.unread()
         return Response(NotificationSerializer(queryset, many=True).data)
 
 
