@@ -225,21 +225,23 @@ class EchoView(generics.GenericAPIView):
         corpus = Shout.objects.all().filter(created_at__gte=past_one)
         if len(corpus) == 0:
             raise NotFound("No similar shouts in last 24 hours")
+        elif len(corpus) == 1:
+            return Response(self.serializer_class(corpus[0]).data, status=status.HTTP_200_OK)
         else:
-            print(len(corpus))
-        corpus_embedding = np.array([np.array(shout.value).reshape(-1) for shout in corpus])
-        print(corpus_embedding.shape)
-        distance = scipy.spatial.distance.cdist(
-                query_embedding,
-                corpus_embedding,
-                'cosine')[0]
-        context = {}
-        context['data'] = list()
-        results = zip(range(len(distance)), distance)
-        results = sorted(results, key=lambda x: x[1])
-        for i, _ in results:
-            context['data'].append(self.serializer_class(corpus[i]).data)
-        return Response(context, status=status.HTTP_200_OK)
+            corpus_embedding = np.array(
+                    [np.array(shout.value).reshape(-1) for shout in corpus]
+                    ).reshape(len(corpus), -1)
+            distance = scipy.spatial.distance.cdist(
+                    query_embedding,
+                    corpus_embedding,
+                    'cosine')[0]
+            context = {}
+            context['data'] = list()
+            results = zip(range(len(distance)), distance)
+            results = sorted(results, key=lambda x: x[1])
+            for i, _ in results:
+                context['data'].append(self.serializer_class(corpus[i]).data)
+            return Response(context, status=status.HTTP_200_OK)
 
 
 # # Views related to self
