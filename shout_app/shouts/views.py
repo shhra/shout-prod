@@ -231,7 +231,7 @@ class EchoView(generics.GenericAPIView):
             raise NotFound("No similar shouts in last 24 hours")
 
         corpus_lists = []
-        for each in corupus:
+        for each in corpus:
             temp_array = np.array(each.value)
             temp = np.zeros((420, 768))
             temp[:temp_array.shape[0], :temp_array.shape[1]] = temp_array
