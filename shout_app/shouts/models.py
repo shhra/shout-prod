@@ -4,6 +4,8 @@ import re
 from requests import get
 from random import randint
 from django.contrib.postgres.fields import ArrayField
+import os
+
 """
 Core Tables
 """
@@ -17,7 +19,7 @@ from allauth.account.models import EmailAddress
 from shout_app.core.models import DateTimeModel
 
 
-url = 'http://127.0.0.1:5000/encode'
+url = os.getenv('ENC_URL') + '/encode'
 
 
 
