@@ -1,3 +1,6 @@
+import scipy.spatial
+import numpy as np
+
 from django.shortcuts import redirect
 from rest_framework import generics, mixins, status, viewsets
 from rest_framework.exceptions import NotFound, NotAcceptable
@@ -202,50 +205,48 @@ class CommentDestroyAPIView(generics.DestroyAPIView):
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
 
-# class DiscussionList(
-        # mixins.RetrieveModelMixin,
-        # generics.GenericAPIView):
-    # """
-    # Gives the detail information of the shout
-    # """
-    # permission_classes = [permissions.IsAuthenticatedOrReadOnly,
-            # IsOwnerOrReadOnly]
-    # """
-    # Details on Discussion
-    # """
-    # def get_object(self, slug):
-        # try:
-            # return Shout.objects.get(slug=slug)
-        # except Shout.DoesNotExist:
-            # raise Http404
+# View for Echo
+class EchoView(generics.GenericAPIView):
+    permission_classes = (IsAuthenticatedOrReadOnly,
+            IsOwnerOrReadOnly)
+    serializer_class = ShoutSerializer
 
-    # def get(self, request, slug, format=None):
-        # shout = self.get_object(slug)
-        # user = self.request.user
-        # context = {}
-        # if shout.supporters.count() >= shout.threshold or user.is_professional:
-            # shout = Shout.objects.get(id=shout.id)
-            # comments = Comment.objects.all().filter(commented_on=shout.id)
-            # context['shout_slug'] = shout.slug
-            # context['is_shouter'] = True if shout.shouter == user else False
-            # context['comments'] = []
-            # for each in comments:
-                # comment = {}
-                # comment['user'] = each.commented_by.username
-                # comment['date'] = each.created_at
-                # comment['text'] = each.text
-                # context['comments'].append(comment)
-            # return Response(context)
-        # else:
-            # return HttpResponseForbidden
-        
+    def get_object(self, slug):
+        try:
+            return Shout.objects.get(slug=slug)
+        except Shout.DoesNotExist:
+            raise NotFound("This shout doesn't exist")
+
+    def get(self, request, *args,  **kwargs):
+        serializer_context = {'request': request}
+        shout = self.get_object(slug=kwargs['slug'])
+        past_one = datetime.now() - timedelta(minutes=1440)
+        query_embedding = np.array(shout.value).reshape(1, -1)
+        corpus = Shout.objects.all().filter(created_at__gte=past_one)
+        if len(corpus) == 0:
+            raise NotFound("No similar shouts in last 24 hours")
+        else:
+            print(len(corpus))
+        corpus_embedding = np.array([np.array(shout.value).reshape(-1) for shout in corpus])
+        print(corpus_embedding.shape)
+        distance = scipy.spatial.distance.cdist(
+                query_embedding,
+                corpus_embedding,
+                'cosine')[0]
+        context = {}
+        context['data'] = list()
+        results = zip(range(len(distance)), distance)
+        results = sorted(results, key=lambda x: x[1])
+        for i, _ in results:
+            context['data'].append(self.serializer_class(corpus[i]).data)
+        return Response(context, status=status.HTTP_200_OK)
+
 
 # # Views related to self
 class MeView(APIView):
     permission_classes = (IsAuthenticatedOrReadOnly,
             IsOwnerOrReadOnly)
     serializer_class = ProfileSerializer
-
 
     def get(self, request, format=None):
         user = self.request.user.profile

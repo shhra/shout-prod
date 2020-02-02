@@ -3,6 +3,7 @@ import uuid
 import re
 from requests import get
 from random import randint
+from django.contrib.postgres.fields import ArrayField
 """
 Core Tables
 """
@@ -16,7 +17,7 @@ from allauth.account.models import EmailAddress
 from shout_app.core.models import DateTimeModel
 
 
-# url = 'http://127.0.0.1:5000/encode'
+url = 'http://127.0.0.1:5000/encode'
 
 
 
@@ -28,7 +29,15 @@ class Shout(DateTimeModel):
     slug = models.SlugField(max_length=80, unique=True, default=uuid.uuid4, null=True)
     body = models.CharField(max_length=420)
     sentiment = models.CharField(max_length=8, default='NEUTRAL')
-    value = models.BinaryField(max_length=4000, null=True, blank=True, default=None)
+    value = ArrayField(
+            ArrayField(
+                models.FloatField(max_length=16, blank=True, null=True),
+                size=768,
+                null=True
+                ),
+            size=420,
+            null=True
+            )
     shouter = models.ForeignKey('profile.Profile', on_delete=models.CASCADE,
             related_name='shouts')
     threshold = models.PositiveIntegerField(default=5)
@@ -48,8 +57,8 @@ class Shout(DateTimeModel):
                 break
             # Truncate & Minus 1 for the hyphen.
             self.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
-        # encoded_value = get(f'{url}?shout={self.body}')
-        # self.value = encoded_value.content
+        encoded_value = get(url=url, json={"shout": self.body})
+        self.value = encoded_value.json()['encodings']
         super(Shout, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
