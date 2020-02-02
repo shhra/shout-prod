@@ -230,12 +230,12 @@ class EchoView(generics.GenericAPIView):
         if len(corpus) == 0:
             raise NotFound("No similar shouts in last 24 hours")
 
-        corpus_lists = []
+        corpus_lists = list()
         for each in corpus:
             temp_array = np.array(each.value)
             temp = np.zeros((420, 768))
             temp[:temp_array.shape[0], :temp_array.shape[1]] = temp_array
-            corpus_lists.append(temp.reshape(1, -1))
+            corpus_lists.append(temp.reshape(-1))
 
         corpus_embedding = np.array(corpus_lists)
         distance = scipy.spatial.distance.cdist(
