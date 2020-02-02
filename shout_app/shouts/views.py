@@ -221,27 +221,34 @@ class EchoView(generics.GenericAPIView):
         serializer_context = {'request': request}
         shout = self.get_object(slug=kwargs['slug'])
         past_one = datetime.now() - timedelta(minutes=1440)
-        query_embedding = np.array(shout.value).reshape(1, -1)
+        query_embedding = np.zeros((420, 768))
+
+        query = np.array(shout.value)
+        query_embedding[:query.shape[0], :query.shape[1]] = query
+        query_embedding = query_embedding.reshape(1, -1)
         corpus = Shout.objects.all().filter(created_at__gte=past_one)
         if len(corpus) == 0:
             raise NotFound("No similar shouts in last 24 hours")
-        elif len(corpus) == 1:
-            return Response(self.serializer_class(corpus[0]).data, status=status.HTTP_200_OK)
-        else:
-            corpus_embedding = np.array(
-                    [np.array(shout.value).reshape(-1) for shout in corpus]
-                    ).reshape(len(corpus), -1)
-            distance = scipy.spatial.distance.cdist(
-                    query_embedding,
-                    corpus_embedding,
-                    'cosine')[0]
-            context = {}
-            context['data'] = list()
-            results = zip(range(len(distance)), distance)
-            results = sorted(results, key=lambda x: x[1])
-            for i, _ in results:
-                context['data'].append(self.serializer_class(corpus[i]).data)
-            return Response(context, status=status.HTTP_200_OK)
+
+        corpus_lists = []
+        for each in corupus:
+            temp_array = np.array(each.value)
+            temp = np.zeros((420, 768))
+            temp[:temp_array.shape[0], :temp_array.shape[1]] = temp_array
+            corpus_lists.append(temp.reshape(1, -1))
+
+        corpus_embedding = np.array(corpus_lists)
+        distance = scipy.spatial.distance.cdist(
+                query_embedding,
+                corpus_embedding,
+                'cosine')[0]
+        context = {}
+        context['data'] = list()
+        results = zip(range(len(distance)), distance)
+        results = sorted(results, key=lambda x: x[1])
+        for i, _ in results:
+            context['data'].append(self.serializer_class(corpus[i]).data)
+        return Response(context, status=status.HTTP_200_OK)
 
 
 # # Views related to self
