@@ -220,15 +220,15 @@ class EchoView(generics.GenericAPIView):
     def get(self, request, *args,  **kwargs):
         serializer_context = {'request': request}
         shout = self.get_object(slug=kwargs['slug'])
-        past_one = datetime.now() - timedelta(minutes=1440)
+        past_one = datetime.now() - timedelta(minutes=1440*7)
         query_embedding = np.zeros((420, 768))
 
         query = np.array(shout.value)
         query_embedding[:query.shape[0], :query.shape[1]] = query
         query_embedding = query_embedding.reshape(1, -1)
-        corpus = Shout.objects.all().filter(created_at__gte=past_one)
+        corpus = Shout.objects.all().filter(created_at__gte=past_one).exclude(slug=shout.slug)[:10]
         if len(corpus) == 0:
-            raise NotFound("No similar shouts in last 24 hours")
+            raise NotFound("No similar shouts in last week")
 
         corpus_lists = list()
         for each in corpus:
