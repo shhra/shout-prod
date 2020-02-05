@@ -176,16 +176,14 @@ class CommentListCreateAPIView(generics.ListCreateAPIView):
         except Shout.DoesNotExist:
             raise NotFound("No one shouted this")
 
-        if shout.supported_by.count() >= shout.threshold and \
-                (request.user.profile.has_supported(shout)
-                or request.user.is_professional 
-                or shout.shouter==request.user.profile):
+        if request.user.profile.has_supported(shout):
             serializer = self.serializer_class(data=data, context=context)
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            raise NotAcceptable("You don't have the permission to comment here")
+            raise NotAcceptable("You don't have the permission to comment here. \
+                    Please support to comment.")
 
 
 class CommentDestroyAPIView(generics.DestroyAPIView):
@@ -198,7 +196,11 @@ class CommentDestroyAPIView(generics.DestroyAPIView):
             comment = Comment.objects.get(slug=comment_slug)
         except Comment.DoesNotExist:
             raise NotFound('This comment doesn\'t exists!')
-        if request.user.profile == comment.commented_by or request.user.is_professional:
+        try:
+            shout = Shout.objects.get(slug=shout_slug)
+        except Shout.DoesNotExist:
+            raise NotFound("No one shouted this")
+        if (request.user.profile is comment.commented_by) or (shout.shouter is request.user.profile):
             comment.delete()
         else:
             raise NotAcceptable("You are denied, you can't delete it.")
@@ -226,7 +228,7 @@ class EchoView(generics.GenericAPIView):
         query = np.array(shout.value)
         query_embedding[:query.shape[0], :query.shape[1]] = query
         query_embedding = query_embedding.reshape(1, -1)
-        corpus = Shout.objects.all().filter(created_at__gte=past_one).exclude(slug=shout.slug)[:10]
+        corpus = Shout.objects.all().filter(created_at__gte=past_one).exclude(slug=shout.slug)
         if len(corpus) == 0:
             raise NotFound("No similar shouts in last week")
 
@@ -246,7 +248,7 @@ class EchoView(generics.GenericAPIView):
         context['data'] = list()
         results = zip(range(len(distance)), distance)
         results = sorted(results, key=lambda x: x[1])
-        for i, _ in results:
+        for i, _ in results[:5]:
             context['data'].append(self.serializer_class(corpus[i]).data)
         return Response(context, status=status.HTTP_200_OK)
 

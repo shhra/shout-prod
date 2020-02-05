@@ -46,7 +46,7 @@ REST_FRAMEWORK = {
 REST_USE_JWT = True
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1)
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=180)
 }
 
 INSTALLED_APPS = [
