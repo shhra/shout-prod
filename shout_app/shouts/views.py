@@ -98,12 +98,11 @@ class ShoutSupportAPIView(APIView):
             raise NotFound('No one has shouted this')
 
         recipient = shout.shouter.user
-        if shout.supported_by.count() >= shout.threshold:
-            notif_discussion = Notification.objects.all().filter(
-                    target_object_id=shout.id,
-                    description="discussion"
-                )
-            notif_discussion.delete()
+        notif_discussion = Notification.objects.all().filter(
+                target_object_id=shout.id,
+                description="discussion"
+            )
+        notif_discussion.delete()
 
         notif = recipient.notifications.get(
                 actor_object_id=profile.user.id,
@@ -140,13 +139,12 @@ class ShoutSupportAPIView(APIView):
                         target=shout,
                         description="support",
                         verb=(f"{profile.user} has supported the shout about {shout.title}."))
-                if shout.supported_by.count() == shout.threshold:
-                    recipients = [recipient.user for recipient in shout.supported_by.all()]
-                    notify.send(profile.user,
-                                recipient=recipients,
-                                target=shout,
-                                description="discussion",
-                                verb=(f"Discussion is unlocked for the shout about {shout.title}."))
+                recipients = [recipient.user for recipient in shout.supported_by.all()]
+                notify.send(profile.user,
+                            recipient=recipients,
+                            target=shout,
+                            description="discussion",
+                            verb=(f"Discussion is unlocked for the shout about {shout.title}."))
             else:
                 raise NotAcceptable('You can\'t support it anymore')
         serializer = self.serializer_class(shout, context=serializer_context)
@@ -200,7 +198,7 @@ class CommentDestroyAPIView(generics.DestroyAPIView):
             shout = Shout.objects.get(slug=shout_slug)
         except Shout.DoesNotExist:
             raise NotFound("No one shouted this")
-        if (request.user.profile is comment.commented_by) or (shout.shouter is request.user.profile):
+        if (request.user.profile is comment.commented_by or (shout.shouter is request.user.profile):
             comment.delete()
         else:
             raise NotAcceptable("You are denied, you can't delete it.")

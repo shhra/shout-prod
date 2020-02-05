@@ -10,7 +10,7 @@ from rest_framework.response import Response
 class ShoutSerializer(serializers.ModelSerializer):
 
     shouter = ProfileSerializer(read_only=True)
-    threshold = serializers.IntegerField(default=5)
+    threshold = serializers.IntegerField(default=1)
     supported = serializers.SerializerMethodField()
     supports_count = serializers.SerializerMethodField(
             method_name='get_supports_count')
