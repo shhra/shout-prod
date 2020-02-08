@@ -98,11 +98,11 @@ class ShoutSupportAPIView(APIView):
             raise NotFound('No one has shouted this')
 
         recipient = shout.shouter.user
-        notif_discussion = Notification.objects.all().filter(
-                target_object_id=shout.id,
-                description="discussion"
-            )
-        notif_discussion.delete()
+        # notif_discussion = Notification.objects.all().filter(
+                # target_object_id=shout.id,
+                # description="discussion"
+            # )
+        # notif_discussion.delete()
 
         notif = recipient.notifications.get(
                 actor_object_id=profile.user.id,
@@ -123,30 +123,35 @@ class ShoutSupportAPIView(APIView):
             shout = Shout.objects.get(slug=slug)
         except Shout.DoesNotExist:
             raise NotFound('No one has shouted this')
-        if shout.supported_by.count() < shout.threshold:
-            shouter = shout.shouter.user
-            profile.support(shout)
-            try:
-                notif = shouter.notifications.get(
-                        actor_object_id=self.request.user.id,
-                        target_object_id=shout.id,
-                        description="support")
-                if notif:
-                    pass
-            except:
-                notify.send(profile.user,
-                        recipient=shouter,
-                        target=shout,
-                        description="support",
-                        verb=(f"{profile.user} has supported the shout about {shout.title}."))
-                recipients = [recipient.user for recipient in shout.supported_by.all()]
-                notify.send(profile.user,
-                            recipient=recipients,
-                            target=shout,
-                            description="discussion",
-                            verb=(f"Discussion is unlocked for the shout about {shout.title}."))
-            else:
-                raise NotAcceptable('You can\'t support it anymore')
+        shouter = shout.shouter.user
+        profile.support(shout)
+        try:
+            notif = shouter.notifications.get(
+                    actor_object_id=self.request.user.id,
+                    target_object_id=shout.id,
+                    description="support")
+            if notif:
+                pass
+        except:
+            notify.send(profile.user,
+                    recipient=shouter,
+                    target=shout,
+                    description="support",
+                    verb=(f"{profile.user} has supported the shout about {shout.title}."))
+
+        # recipients = [recipient.user for recipient in shout.supported_by.all()]
+        # try:
+            # notif_d = Notification.objects.all().fitler(
+                    # target_object_id=shout.id,
+                    # description="discussion")
+            # if notif_d:
+                # pass
+        # except:
+            # notify.send(profile.user,
+                        # recipient=recipients,
+                        # target=shout,
+                        # description="discussion",
+                        # verb=(f"Discussion is unlocked for the shout about {shout.title}."))
         serializer = self.serializer_class(shout, context=serializer_context)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -198,7 +203,7 @@ class CommentDestroyAPIView(generics.DestroyAPIView):
             shout = Shout.objects.get(slug=shout_slug)
         except Shout.DoesNotExist:
             raise NotFound("No one shouted this")
-        if (request.user.profile is comment.commented_by or (shout.shouter is request.user.profile):
+        if (request.user.profile is comment.commented_by) or (shout.shouter is request.user.profile):
             comment.delete()
         else:
             raise NotAcceptable("You are denied, you can't delete it.")

@@ -59,8 +59,8 @@ class Shout(DateTimeModel):
                 break
             # Truncate & Minus 1 for the hyphen.
             self.slug = "%s-%d" % (orig[:max_length - len(str(x)) - 1], x)
-        encoded_value = get(url=url, json={"shout": self.body})
-        self.value = encoded_value.json()['encodings']
+        # encoded_value = get(url=url, json={"shout": self.body})
+        # self.value = encoded_value.json()['encodings']
         super(Shout, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
